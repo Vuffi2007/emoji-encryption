@@ -51,7 +51,7 @@ dict_text_to_emoji = {
     "(": "😻",
     ")": "😼",
     "/": "😽",
-    " ": " "
+    " ": "😤"
 }
 
 def process_input(input_text):
@@ -91,7 +91,17 @@ def text_to_emoji(text, mapping, seed):
             print(f"Oops, there was an error '{char}' doesn't exist")
     if error == True:
         print("One or more character doesn't exist, those characters have been skipped")
-    print(f"'{translated_accumulated}'")
+    
+    if len(translated_accumulated) < 100:
+        print(translated_accumulated)
+    elif len(translated_accumulated) >= 100 and len(translated_accumulated) < 200:
+        first_part = translated_accumulated[:100]
+        second_part = translated_accumulated[100:]
+        print("The terminal can't print more than 100 emojis without corrupting for whatever reason, so it's split")
+        print(f"1st: {first_part}")
+        print(f"2nd: {second_part}")
+    else:
+        print("Too long texts doesn't really make sense, try making it shorter :)")
 
 def emoji_to_text(emojis, mapping, seed):
     emoji_list = process_input(emojis)
@@ -115,7 +125,7 @@ def emoji_to_text(emojis, mapping, seed):
             print(f"Oops, there was an error '{emoji}' doesn't exist")
     if error == True:
         print("One or more character doesn't exist, those characters have been skipped ❌")
-        print("Terminals are terrible at printing emojis, and so is your computer at copying them. So splittings and corruptions happen ☠️")
+        print("Terminals are terrible at printing emojis, and so is your computer at copying them. So corruptions happen ☠️")
     print(f"'{translated_accumulated}'")
 
 emoji_or_text = input("Do you want to translate text to emoji, or emoji to text (a/b): ")
