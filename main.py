@@ -110,7 +110,7 @@ def emoji_to_text(emojis, mapping, seed):
     error = False
 
     for emoji in emoji_list:
-        if emoji not in mapping: # Splittings and corruptions happen that messes with the decryption, but most of it is still readable
+        if emoji not in mapping: # Corruptions happen that messes with the decryption, but most of it is still readable
             error = True
             print(f"Oops, there was an error '{emoji}' doesn't exist")
             continue
@@ -128,21 +128,24 @@ def emoji_to_text(emojis, mapping, seed):
         print("Terminals are terrible at printing emojis, and so is your computer at copying them. So corruptions happen ☠️")
     print(f"'{translated_accumulated}'")
 
+def gen_seed_and_maps():
+    seed = input("Enter a seed for encryption (or leave empty for default seed): ")
+    if not seed:
+        seed = 42
+    else:
+        seed = int(seed)
+    randomized_mapping = create_randomized_mapping(seed)
+    dict_emoji_to_text = {v: k for k, v in randomized_mapping.items()}
+    return randomized_mapping, dict_emoji_to_text, seed
+
 emoji_or_text = input("Do you want to translate text to emoji, or emoji to text (a/b): ")
 
-seed = input("Enter a seed for encryption (or leave empty for default seed): ")
-if not seed:
-    seed = 42
-else:
-    seed = int(seed)
-
-randomized_mapping = create_randomized_mapping(seed)
-dict_emoji_to_text = {v: k for k, v in randomized_mapping.items()}
-
 if emoji_or_text == "a":
+    randomized_mapping, _, seed = gen_seed_and_maps()
     text = input("Write your text: ")
     text_to_emoji(text, randomized_mapping, seed)
 elif emoji_or_text == "b":
+    _, dict_emoji_to_text, seed = gen_seed_and_maps()
     emojis = input("Write your emoji text: ")
     emoji_to_text(emojis, dict_emoji_to_text, seed)
 else:
